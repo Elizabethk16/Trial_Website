@@ -6,13 +6,15 @@
     <title>SGOC, Mathikere</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary-blue: #0b3c5d;
-            --secondary-blue: #1f6fa8;
-            --light-blue: #eaf4fb;
+            --deep-blue: #082f49;
+            --primary-blue: #0b4f7c;
+            --secondary-blue: #3b82c4;
+            --accent-blue: #7fb3d5;
+            --light-blue: #e8f2fb;
             --text-dark: #1a1a1a;
         }
 
@@ -24,45 +26,56 @@
 
         body {
             font-family: "Inter", sans-serif;
-            background: linear-gradient(180deg, #f5f9fd, var(--light-blue));
-            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--text-dark);
+
+            /* More colorful blue background */
+            background:
+                radial-gradient(circle at top left, rgba(127,179,213,0.45), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(59,130,196,0.35), transparent 60%),
+                linear-gradient(180deg, #f2f8fd, var(--light-blue));
         }
 
         .container {
             max-width: 900px;
             width: 90%;
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 3.5rem 2.5rem;
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 28px;
+            box-shadow: 0 30px 70px rgba(8, 47, 73, 0.18);
+            backdrop-filter: blur(6px);
         }
 
         /* Header */
         h1 {
-            font-family: "Playfair Display", serif;
-            font-size: 3rem;
-            color: var(--primary-blue);
-            margin-bottom: 0.3rem;
-            letter-spacing: 0.5px;
+            font-family: "Cinzel", serif;
+            font-size: 3.1rem;
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 0.4rem;
+            letter-spacing: 1.2px;
         }
 
         h2 {
             font-weight: 400;
-            color: var(--secondary-blue);
-            font-size: 1.4rem;
-            margin-bottom: 3rem;
+            color: var(--primary-blue);
+            font-size: 1.45rem;
+            margin-bottom: 3.2rem;
+            letter-spacing: 0.4px;
         }
 
         /* Image Card */
         .image-card {
             width: 320px;
             height: 320px;
-            margin: 0 auto 2.5rem auto;
-            border-radius: 20px;
+            margin: 0 auto 2.8rem auto;
+            border-radius: 22px;
             background: white;
-            box-shadow: 0 10px 25px rgba(11, 60, 93, 0.18);
+            box-shadow: 0 15px 35px rgba(11, 79, 124, 0.22);
             overflow: hidden;
             transition: 
                 transform 0.35s ease,
@@ -72,12 +85,12 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hover (desktop) + Tap/Focus (mobile & keyboard) */
+        /* Hover + Tap */
         .image-card:hover,
         .image-card:active,
         .image-card:focus-visible {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 25px 45px rgba(11, 60, 93, 0.35);
+            transform: translateY(-18px) scale(1.04);
+            box-shadow: 0 35px 65px rgba(11, 79, 124, 0.38);
         }
 
         .image-card img {
@@ -88,29 +101,33 @@
 
         /* Description */
         .description {
-            max-width: 700px;
+            max-width: 720px;
             margin: 0 auto;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: #2c2c2c;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 2rem 2.2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: #24313c;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 2.2rem 2.6rem;
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
         }
 
         /* Accent Line */
         .accent-line {
-            width: 120px;
+            width: 140px;
             height: 3px;
             background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
-            margin: 2.5rem auto 0;
-            border-radius: 2px;
+            margin: 2.8rem auto 0;
+            border-radius: 3px;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 2.4rem;
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
             }
 
             .image-card {
@@ -120,7 +137,7 @@
 
             .description {
                 font-size: 1rem;
-                padding: 1.6rem;
+                padding: 1.8rem;
             }
         }
     </style>
@@ -131,12 +148,10 @@
         <h1>SGOC, Mathikere</h1>
         <h2>Icons of the Church</h2>
 
-        <!-- Icon Image -->
         <div class="image-card" tabindex="0">
             <img src="images/Church_Icons.jpeg" alt="Icons of the church">
         </div>
 
-        <!-- Description -->
         <div class="description">
             These are the icons of the church.
         </div>
