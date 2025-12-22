@@ -67,10 +67,15 @@
             transition: 
                 transform 0.35s ease,
                 box-shadow 0.35s ease;
+            cursor: pointer;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hover Pop Effect */
-        .image-card:hover {
+        /* Hover (desktop) + Tap/Focus (mobile & keyboard) */
+        .image-card:hover,
+        .image-card:active,
+        .image-card:focus-visible {
             transform: translateY(-15px) scale(1.03);
             box-shadow: 0 25px 45px rgba(11, 60, 93, 0.35);
         }
@@ -127,7 +132,7 @@
         <h2>Icons of the Church</h2>
 
         <!-- Icon Image -->
-        <div class="image-card">
+        <div class="image-card" tabindex="0">
             <img src="images/Church_Icons.jpeg" alt="Icons of the church">
         </div>
 
