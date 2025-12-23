@@ -6,20 +6,14 @@
     <title>SGOC, Mathikere</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --deep-blue: #082f49;
             --primary-blue: #0b4f7c;
             --secondary-blue: #3b82c4;
-            --accent-blue: #7fb3d5;
             --light-blue: #e8f2fb;
-            --text-dark: #1a1a1a;
         }
 
         * {
@@ -34,9 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-dark);
 
-            /* More colorful blue background */
             background:
                 radial-gradient(circle at top left, rgba(127,179,213,0.45), transparent 55%),
                 radial-gradient(circle at bottom right, rgba(59,130,196,0.35), transparent 60%),
@@ -54,47 +46,41 @@
             backdrop-filter: blur(6px);
         }
 
-        /* Header */
+        /* Headings */
         h1 {
             font-family: "Cinzel", serif;
             font-size: 3.1rem;
-            font-weight: 600;
             color: var(--deep-blue);
             margin-bottom: 0.4rem;
             letter-spacing: 1.2px;
         }
 
         h2 {
+            font-size: 1.45rem;
             font-weight: 400;
             color: var(--primary-blue);
-            font-size: 1.45rem;
             margin-bottom: 3.2rem;
-            letter-spacing: 0.4px;
         }
 
         /* Image Card */
         .image-card {
             width: 320px;
             height: 320px;
-            margin: 0 auto 2.8rem auto;
+            margin: 0 auto;
             border-radius: 22px;
+            overflow: hidden;
             background: white;
             box-shadow: 0 15px 35px rgba(11, 79, 124, 0.22);
-            overflow: hidden;
-            transition: 
-                transform 0.35s ease,
-                box-shadow 0.35s ease;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hover + Tap */
         .image-card:hover,
-        .image-card:active,
         .image-card:focus-visible {
-            transform: translateY(-18px) scale(1.04);
-            box-shadow: 0 35px 65px rgba(11, 79, 124, 0.38);
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 30px 60px rgba(11, 79, 124, 0.35);
         }
 
         .image-card img {
@@ -103,28 +89,62 @@
             object-fit: cover;
         }
 
-        /* Description */
-        .description {
-            max-width: 720px;
-            margin: 0 auto;
-            font-family: "Dancing Script", cursive;
-            font-size: 1.25rem;
-            letter-spacing: 0.4px;
-            line-height: 1.85;
-            color: #24313c;
-            background: rgba(255, 255, 255, 0.75);
-            padding: 2.2rem 2.6rem;
-            border-radius: 18px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 47, 73, 0.45);
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
         }
 
-        /* Accent Line */
-        .accent-line {
-            width: 140px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
-            margin: 2.8rem auto 0;
-            border-radius: 3px;
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-content {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 2.6rem 3rem;
+            border-radius: 22px;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+            font-family: "Dancing Script", cursive;
+            font-size: 1.6rem;
+            line-height: 1.8;
+            color: var(--deep-blue);
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--deep-blue);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.92);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @media (max-width: 600px) {
@@ -141,9 +161,9 @@
                 height: 260px;
             }
 
-            .description {
-                font-size: 1rem;
-                padding: 1.8rem;
+            .overlay-content {
+                font-size: 1.35rem;
+                padding: 2rem;
             }
         }
     </style>
@@ -154,17 +174,36 @@
         <h1>SGOC, Mathikere</h1>
         <h2>Icons of the Church</h2>
 
-        <div class="image-card" tabindex="0">
+        <div class="image-card" tabindex="0" onclick="openOverlay()">
             <img src="images/Parumala_Thirumeni_Icon.jpeg" alt="Parumala Thirumeni">
         </div>
+    </div>
 
-        <div class="description">
+    <!-- Overlay -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" onclick="closeOverlay()">×</button>
             Geevarghese Mar Gregorios of Parumala (15 June 1848 – 2 November 1902), also known as Parumala Thirumeni, was a Metropolitan of the Malankara Church.
             Parumala Thirumeni became the first person of Indian origin to be canonised as saint. 
             In 1947, the Malankara Orthodox Syrian Church declared Mar Gregorios as a saint, making him the first saint from India canonized by that Church.
         </div>
-
-        <div class="accent-line"></div>
     </div>
+
+    <!-- Script -->
+    <script>
+        function openOverlay() {
+            document.getElementById("overlay").classList.add("active");
+        }
+
+        function closeOverlay() {
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        document.getElementById("overlay").addEventListener("click", function (e) {
+            if (e.target === this) {
+                closeOverlay();
+            }
+        });
+    </script>
 </body>
 </html>
