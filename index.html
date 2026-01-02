@@ -5,7 +5,7 @@
   <title>Daily Bible Reading</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -79,7 +79,7 @@
     }
 
     .plan-item {
-      padding: 12px 0;
+      padding: 14px 0;
       border-bottom: 1px solid #eee;
     }
 
@@ -92,9 +92,19 @@
       color: #6b5bd2;
     }
 
-    .psalm {
-      margin-top: 4px;
+    .psalm a {
+      display: inline-block;
+      margin-top: 6px;
       font-size: 1.05rem;
+      color: #3c2a6d;
+      text-decoration: none;
+      border-bottom: 1px dashed #b6aef0;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .psalm a:hover {
+      color: #5849b8;
+      border-color: #5849b8;
     }
 
     .note {
@@ -130,9 +140,17 @@
     { date: "January 7", psalm: "Psalm 7" }
   ];
 
+  const bibleGatewayBase =
+    "https://www.biblegateway.com/passage/?search=";
+  const version = "&version=NIV";
+
+  function bibleLink(psalm) {
+    return bibleGatewayBase + encodeURIComponent(psalm) + version;
+  }
+
   function showToday() {
     const today = new Date();
-    const start = new Date(today.getFullYear(), 0, 1); // Jan 1
+    const start = new Date(today.getFullYear(), 0, 1);
     const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
 
     const content = document.getElementById("content");
@@ -143,7 +161,11 @@
       content.innerHTML = `
         <h2>Today’s Reading</h2>
         <p class="date">${reading.date}</p>
-        <p class="psalm">${reading.psalm}</p>
+        <p class="psalm">
+          <a href="${bibleLink(reading.psalm)}" target="_blank" rel="noopener">
+            ${reading.psalm} → Read on Bible Gateway
+          </a>
+        </p>
       `;
     } else {
       content.innerHTML = `
@@ -163,7 +185,11 @@
       html += `
         <div class="plan-item">
           <div class="date">${item.date}</div>
-          <div class="psalm">${item.psalm}</div>
+          <div class="psalm">
+            <a href="${bibleLink(item.psalm)}" target="_blank" rel="noopener">
+              ${item.psalm} → Read on Bible Gateway
+            </a>
+          </div>
         </div>
       `;
     });
