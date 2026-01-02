@@ -1,244 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>SGOC, Mathikere</title>
+  <meta charset="UTF-8">
+  <title>Daily Bible Reading</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f4f1ff, #faf9ff);
+      color: #2f2f2f;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-    <style>
-        :root {
-            --deep-blue: #082f49;
-            --primary-blue: #0b4f7c;
-            --secondary-blue: #3b82c4;
-            --light-blue: #e8f2fb;
-        }
+    .container {
+      max-width: 800px;
+      width: 90%;
+      padding: 40px 20px;
+      text-align: center;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      color: #3c2a6d;
+    }
 
-        body {
-            font-family: "Inter", sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    .subtitle {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 40px;
+    }
 
-            background:
-                radial-gradient(circle at top left, rgba(127,179,213,0.45), transparent 55%),
-                radial-gradient(circle at bottom right, rgba(59,130,196,0.35), transparent 60%),
-                linear-gradient(180deg, #f2f8fd, var(--light-blue));
-        }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
 
-        .icon-figure {
-            margin: 0;
-            padding: 0;
-            display: block;
-            text-align: center;
-        }
-        
-        .image-caption {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.05rem;
-            font-style: italic;
-            letter-spacing: 0.5px;
-            color: #0b3c5d;
-            margin-top: 1rem;
-        }
+    button {
+      background: #6b5bd2;
+      color: #fff;
+      border: none;
+      padding: 14px 26px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
 
+    button:hover {
+      background: #5849b8;
+      transform: translateY(-2px);
+    }
 
-        .image-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .content {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: left;
+      display: none;
+    }
 
-        .container {
-            max-width: 900px;
-            width: 90%;
-            text-align: center;
-            padding: 3.5rem 2.5rem;
-            background: rgba(255, 255, 255, 0.65);
-            border-radius: 28px;
-            box-shadow: 0 30px 70px rgba(8, 47, 73, 0.18);
-            backdrop-filter: blur(6px);
-        }
+    .content h2 {
+      font-family: 'Playfair Display', serif;
+      color: #3c2a6d;
+      margin-top: 0;
+    }
 
-        /* Headings */
-        h1 {
-            font-family: "Cinzel", serif;
-            font-size: 3.1rem;
-            color: var(--deep-blue);
-            margin-bottom: 0.4rem;
-            letter-spacing: 1.2px;
-        }
+    .plan-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
 
-        h2 {
-            font-size: 1.45rem;
-            font-weight: 400;
-            color: var(--primary-blue);
-            margin-bottom: 3.2rem;
-        }
+    .plan-item:last-child {
+      border-bottom: none;
+    }
 
-        /* Image Card */
-        .image-card {
-            width: 320px;
-            height: 320px;
-            margin: 0 auto;
-            border-radius: 22px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 15px 35px rgba(11, 79, 124, 0.22);
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-            cursor: pointer;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+    .date {
+      font-weight: 600;
+      color: #6b5bd2;
+    }
 
-        .image-card:hover,
-        .image-card:focus-visible {
-            transform: translateY(-12px) scale(1.03);
-            box-shadow: 0 30px 60px rgba(11, 79, 124, 0.35);
-        }
+    .psalm {
+      margin-top: 4px;
+      font-size: 1.05rem;
+    }
 
-        .image-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(8, 47, 73, 0.45);
-            backdrop-filter: blur(9px);
-            -webkit-backdrop-filter: blur(9px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .overlay-content {
-            background: rgba(255, 255, 255, 0.92);
-            padding: 2.6rem 3rem;
-            border-radius: 22px;
-            max-width: 520px;
-            text-align: center;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
-            font-family: "Dancing Script", cursive;
-            font-size: 1.6rem;
-            line-height: 1.8;
-            color: var(--deep-blue);
-            position: relative;
-            animation: scaleIn 0.3s ease;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 18px;
-            font-size: 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--deep-blue);
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0.92);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            h2 {
-                font-size: 1.25rem;
-            }
-
-            .image-card {
-                width: 260px;
-                height: 260px;
-            }
-
-            .overlay-content {
-                font-size: 1.35rem;
-                padding: 2rem;
-            }
-        }
-    </style>
+    .note {
+      margin-top: 20px;
+      font-style: italic;
+      color: #777;
+      text-align: center;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>SGOC, Mathikere</h1>
-        <h2>Click on the icon to learn more!</h2>
 
-        <div class="image-card" tabindex="0" onclick="openOverlay()">
-            <img src="images/Parumala_Thirumeni_Icon.jpeg" alt="Parumala Thirumeni">
+<div class="container">
+  <h1>Daily Bible Reading</h1>
+  <div class="subtitle">“Your word is a lamp to my feet and a light to my path.” – Psalm 119:105</div>
+
+  <div class="buttons">
+    <button onclick="showToday()">Today’s Reading</button>
+    <button onclick="showPlan()">7-Day Reading Plan</button>
+  </div>
+
+  <div id="content" class="content"></div>
+</div>
+
+<script>
+  const readings = [
+    { date: "January 1", psalm: "Psalm 1" },
+    { date: "January 2", psalm: "Psalm 2" },
+    { date: "January 3", psalm: "Psalm 3" },
+    { date: "January 4", psalm: "Psalm 4" },
+    { date: "January 5", psalm: "Psalm 5" },
+    { date: "January 6", psalm: "Psalm 6" },
+    { date: "January 7", psalm: "Psalm 7" }
+  ];
+
+  function showToday() {
+    const today = new Date();
+    const start = new Date(today.getFullYear(), 0, 1); // Jan 1
+    const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+
+    const content = document.getElementById("content");
+    content.style.display = "block";
+
+    if (diffDays >= 0 && diffDays < readings.length) {
+      const reading = readings[diffDays];
+      content.innerHTML = `
+        <h2>Today’s Reading</h2>
+        <p class="date">${reading.date}</p>
+        <p class="psalm">${reading.psalm}</p>
+      `;
+    } else {
+      content.innerHTML = `
+        <h2>Today’s Reading</h2>
+        <p class="note">The reading plan currently covers January 1–7.</p>
+      `;
+    }
+  }
+
+  function showPlan() {
+    const content = document.getElementById("content");
+    content.style.display = "block";
+
+    let html = `<h2>7-Day Reading Plan</h2>`;
+
+    readings.forEach(item => {
+      html += `
+        <div class="plan-item">
+          <div class="date">${item.date}</div>
+          <div class="psalm">${item.psalm}</div>
         </div>
+      `;
+    });
 
+    content.innerHTML = html;
+  }
+</script>
 
-        <figure class="icon-figure">
-            <!-- Overlay -->
-            <div class="overlay" id="overlay">
-                <div class="overlay-content">
-                    <button class="close-btn" onclick="closeOverlay()">×</button>
-                    Geevarghese Mar Gregorios of Parumala (15 June 1848 – 2 November 1902), also known as Parumala Thirumeni, was a Metropolitan of the Malankara Church.
-                    Parumala Thirumeni became the first person of Indian origin to be canonised as saint. 
-                    In 1947, the Malankara Orthodox Syrian Church declared Mar Gregorios as a saint, making him the first saint from India canonized by that Church.
-                </div>
-            </div>
-    
-            <figcaption class="image-caption">
-                Icons hold a central and sacred place in the life of the Orthodox Church, serving not merely as religious art but as visual expressions of theology. 
-                They are often called “windows to heaven,” helping the faithful contemplate divine realities and the lives of Christ, the Mother of God, and the saints.
-                Icons teach, inspire reverence, and guide worshippers toward a living encounter with faith.
-            </figcaption>
-        </figure>
-    </div>
-
-
-    <!-- Script -->
-    <script>
-        function openOverlay() {
-            document.getElementById("overlay").classList.add("active");
-        }
-
-        function closeOverlay() {
-            document.getElementById("overlay").classList.remove("active");
-        }
-
-        document.getElementById("overlay").addEventListener("click", function (e) {
-            if (e.target === this) {
-                closeOverlay();
-            }
-        });
-    </script>
 </body>
 </html>
