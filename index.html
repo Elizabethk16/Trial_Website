@@ -1,188 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Daily Bible Reading Plan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>2026 Daily Bible Reading Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      background: #f6f4ff;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: #f6f4ff;
+  display: flex;
+  justify-content: center;
+}
 
-    .container {
-      max-width: 900px;
-      width: 90%;
-      padding: 40px 20px;
-      text-align: center;
-    }
+.container {
+  max-width: 1000px;
+  width: 90%;
+  padding: 40px 20px;
+}
 
-    h1 {
-      font-family: "Playfair Display", serif;
-      color: #3c2a6d;
-      margin-bottom: 10px;
-    }
+h1 {
+  text-align: center;
+  font-family: "Playfair Display", serif;
+  color: #3c2a6d;
+}
 
-    .subtitle {
-      color: #555;
-      margin-bottom: 30px;
-    }
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 30px;
+}
 
-    .buttons {
-      margin-bottom: 30px;
-    }
+.buttons {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    button {
-      background: #6b5bd2;
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      margin: 10px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+button {
+  background: #6b5bd2;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  margin: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
 
-    button:hover {
-      background: #5849b8;
-    }
+button:hover {
+  background: #5849b8;
+}
 
-    #content {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      text-align: left;
-      display: none;
-    }
+#content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
 
-    .plan-item {
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-    }
+.month {
+  margin-top: 30px;
+}
 
-    .date {
-      font-weight: 600;
-      color: #6b5bd2;
-    }
+.plan-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
 
-    a {
-      text-decoration: none;
-      color: #3c2a6d;
-    }
+.date {
+  font-weight: 600;
+  color: #6b5bd2;
+}
 
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+a {
+  color: #3c2a6d;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
 </head>
+
 <body>
-
 <div class="container">
-  <h1>Daily Bible Reading</h1>
-  <div class="subtitle">2026 Reading Plan</div>
+<h1>2026 Daily Bible Reading</h1>
+<div class="subtitle">One day. One passage. Walking through Scripture together.</div>
 
-  <div class="buttons">
-    <button id="todayBtn">Today’s Reading</button>
-    <button id="planBtn">Reading Plan</button>
-  </div>
+<div class="buttons">
+  <button id="todayBtn">Today’s Reading</button>
+  <button id="planBtn">Full Reading Plan</button>
+</div>
 
-  <div id="content"></div>
+<div id="content"></div>
 </div>
 
 <script>
-/* =======================
-   READING PLAN DATA
-======================= */
-const plan = {
-  January: [
-    { day: 1, label: "Genesis 1:1–19", passage: "Genesis 1:1-19" },
-    { day: 2, label: "Genesis 1:20–2:4", passage: "Genesis 1:20-2:4" },
-    { day: 3, label: "Genesis 2:5–25", passage: "Genesis 2:5-25" },
-    { day: 4, label: "Genesis 3:1–21", passage: "Genesis 3:1-21" },
-    { day: 5, label: "Genesis 3:22–4:16", passage: "Genesis 3:22-4:16" },
-    { day: 6, label: "Genesis 4:17–5:5", passage: "Genesis 4:17-5:5" },
-    { day: 7, label: "Genesis 5:6–32", passage: "Genesis 5:6-32" }
-  ],
-
-  February: [
-    { day: 1, label: "Psalm 5:1–12", passage: "Psalm 5:1-12" },
-    { day: 2, label: "Psalm 8:1–9", passage: "Psalm 8:1-9" },
-    { day: 3, label: "Psalm 7:1–17", passage: "Psalm 7:1-17" },
-    { day: 4, label: "Psalm 8:1–9", passage: "Psalm 8:1-9" }
-  ]
-};
-
 const BASE = "https://www.biblegateway.com/passage/?search=";
 const VERSION = "&version=NIV";
+const link = p => BASE + encodeURIComponent(p) + VERSION;
 
-function bgLink(passage) {
-  return BASE + encodeURIComponent(passage) + VERSION;
-}
+/* =========================
+   FULL YEAR READING PLAN
+========================= */
+const plan = {
+January: [
+["1","Genesis 1:1-19"],["2","Genesis 1:20-2:4"],["3","Genesis 2:5-25"],
+["4","Genesis 3:1-21"],["5","Genesis 3:22-4:16"],["6","Genesis 4:17-5:5"],
+["7","Genesis 5:6-32"],["8","Genesis 6:1-22"],["9","Genesis 7:1-24"],
+["10","Genesis 8:1-22"],["11","Genesis 9:1-17"],["12","Genesis 9:18-29"],
+["13","Genesis 11:1-9,27-32"],["14","Genesis 12:1-20"],["15","Genesis 13:1-18"],
+["16","Genesis 14:8-24"],["17","Genesis 15:1-21"],["18","Genesis 16:1-16"],
+["19","Genesis 17:1-27"],["20","Genesis 18:1-33"],["21","Genesis 18:16-33"],
+["22","Genesis 19:1-38"],["23","Genesis 20:1-18"],["24","Genesis 21:1-21"],
+["25","Genesis 21:22-34"],["26","Genesis 22:1-19"],["27","Genesis 22:20-24"],
+["28","Genesis 23:1-20"],["29","Genesis 24:1-67"],["30","Genesis 25:1-18"],
+["31","Genesis 31:8;41:8"]
+],
 
-/* =======================
-   BUTTON FUNCTIONS
-======================= */
+February: [
+["1","Psalm 5:1-12"],["2","Psalm 8:1-9"],["3","Psalm 7:1-17"],
+["4","Psalm 8:1-9"],["5","Psalm 10:1-18"],["6","Psalm 11:1-7"],
+["7","Psalm 12:1-8"],["8","Psalm 13:1-6"],["9","Psalm 14:1-7"],
+["10","Psalm 15:1-5"],["11","Psalm 9:1-20"],["12","Psalm 9:18-29"],
+["13","Psalm 11:9,27-32"],["14","Psalm 12:1-20"],
+["15","Psalm 13:1-18"],["16","Psalm 15:1-21"],["17","Psalm 17:1-27"],
+["18","Psalm 17:1-27"],["19","Psalm 19:1-14"],["20","Psalm 20:1-9"],
+["21","Psalm 21:1-13"],["22","Psalm 22:1-34"],["23","Psalm 6:1-13"],
+["24","Psalm 6:14-29"],["25","Psalm 6:30-56"],["26","Psalm 7:1-23"],
+["27","Psalm 8:1-21"],["28","Psalm 8:22-38"]
+],
+
+March: [
+["1","Mark 9:1-13"],["2","Mark 9:14-32"],["3","Psalm 16:1-11"],
+["4","Mark 17:1-15"],["5","Mark 18:1-30"],["6","Mark 18:31-50"],
+["7","Mark 19:1-14"],["8","Mark 20:1-9"],["9","Mark 21:1-13"],
+["10","Mark 22:1-21"],["11","Mark 22:22-31"],["12","Mark 23:1-6"],
+["13","Mark 25:1-22"]
+],
+
+April: [
+["1","Mark 14:66-72"],["2","Mark 15:1-20"],["3","Mark 15:21-32"],
+["4","Mark 15:33-47"],["5","Mark 16:1-8"],["6","Mark 16:9-20"],
+["7","Isaiah 11:1-7"],["8","Isaiah 11:8-31"],["9","Isaiah 12:1-11"],
+["10","Isaiah 21:2-12"],["11","Isaiah 3:1-15"],["12","Isaiah 3:16-4:7"],
+["13","Isaiah 4:2-5"],["14","Isaiah 5:8-17"],["15","Isaiah 5:18-30"],
+["16","Isaiah 6:1-13"],["17","Isaiah 7:1-25"],["18","Isaiah 8:1-22"],
+["19","Isaiah 9:1-7"],["20","Isaiah 9:8-21"]
+],
+
+May: [
+["1","1 Corinthians 7:12-24"],["2","1 Corinthians 7:25-40"],
+["3","Genesis 24:1-33"],["4","Genesis 24:34-67"],
+["5","Genesis 25:1-34"],["6","Genesis 26:1-35"],
+["7","Genesis 27:1-29"],["8","Genesis 27:30-45"],
+["9","Genesis 27:46-28:22"],["10","Genesis 29:1-30"],
+["11","Genesis 29:31-34"],["12","Genesis 31:1-24"],
+["13","Genesis 31:25-55"],["14","Psalm 24:1-10"],
+["15","Philemon 1:1-6"],["16","Philemon 1:17-25"],
+["17","1 Corinthians 8:1-13"],["18","1 Corinthians 9:1-14"],
+["19","1 Corinthians 9:15-27"],["20","1 Corinthians 10:1-13"],
+["21","1 Corinthians 10:14-11:1"],["22","1 Corinthians 11:2-16"],
+["23","1 Corinthians 11:17-34"],["24","1 Corinthians 12:1-13"],
+["25","1 Corinthians 12:14-31"],["26","1 Corinthians 13:1-13"],
+["27","1 Corinthians 13:8-13"],["28","1 Corinthians 14:1-19"],
+["29","1 Corinthians 14:20-40"],["30","1 Corinthians 15:1-19"],
+["31","1 Corinthians 15:20-34"]
+]
+};
+
+/* =========================
+   BUTTON HANDLERS
+========================= */
 function showToday() {
   const now = new Date();
-  const month = now.toLocaleString("default", { month: "long" });
-  const day = now.getDate();
+  const month = now.toLocaleString("default",{month:"long"});
+  const day = now.getDate().toString();
+  const entry = plan[month]?.find(e => e[0] === day);
+
   const content = document.getElementById("content");
-
-  content.style.display = "block";
-
-  const entry = plan[month]?.find(e => e.day === day);
-
   if (!entry) {
-    content.innerHTML = `<h2>Today’s Reading</h2><p>No reading scheduled.</p>`;
+    content.innerHTML = "<h2>No reading scheduled.</h2>";
     return;
   }
 
   content.innerHTML = `
     <h2>Today’s Reading</h2>
     <p class="date">${month} ${day}</p>
-    <p>
-      <a href="${bgLink(entry.passage)}" target="_blank">
-        ${entry.label} → Read on Bible Gateway
-      </a>
-    </p>
+    <p><a href="${link(entry[1])}" target="_blank">${entry[1]}</a></p>
   `;
 }
 
 function showPlan() {
-  const content = document.getElementById("content");
-  content.style.display = "block";
-
-  let html = `<h2>Reading Plan</h2>`;
-
+  let html = "<h2>Full Reading Plan</h2>";
   for (const month in plan) {
-    html += `<h3>${month}</h3>`;
+    html += `<div class="month"><h3>${month}</h3>`;
     plan[month].forEach(e => {
       html += `
         <div class="plan-item">
-          <div class="date">${month} ${e.day}</div>
-          <a href="${bgLink(e.passage)}" target="_blank">${e.label}</a>
-        </div>
-      `;
+          <span class="date">${month} ${e[0]}</span><br>
+          <a href="${link(e[1])}" target="_blank">${e[1]}</a>
+        </div>`;
     });
+    html += "</div>";
   }
-
-  content.innerHTML = html;
+  document.getElementById("content").innerHTML = html;
 }
 
-/* =======================
-   EVENT BINDING (IMPORTANT)
-======================= */
-document.getElementById("todayBtn").addEventListener("click", showToday);
-document.getElementById("planBtn").addEventListener("click", showPlan);
+document.getElementById("todayBtn").onclick = showToday;
+document.getElementById("planBtn").onclick = showPlan;
 </script>
-
 </body>
 </html>
