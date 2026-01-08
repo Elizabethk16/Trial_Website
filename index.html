@@ -130,72 +130,113 @@
 </div>
 
 <script>
-  const readings = [
-    { date: "January 1", psalm: "Psalm 1" },
-    { date: "January 2", psalm: "Psalm 2" },
-    { date: "January 3", psalm: "Psalm 3" },
-    { date: "January 4", psalm: "Psalm 4" },
-    { date: "January 5", psalm: "Psalm 5" },
-    { date: "January 6", psalm: "Psalm 6" },
-    { date: "January 7", psalm: "Psalm 7" }
-  ];
+  <script>
+const plan = {
+  January: [
+    { day: 1, label: "Genesis 1:1–19", passage: "Genesis 1:1-19" },
+    { day: 2, label: "Genesis 1:20–2:4", passage: "Genesis 1:20-2:4" },
+    { day: 3, label: "Genesis 2:5–25", passage: "Genesis 2:5-25" },
+    { day: 4, label: "Genesis 3:1–21", passage: "Genesis 3:1-21" },
+    { day: 5, label: "Genesis 3:22–4:16", passage: "Genesis 3:22-4:16" },
+    { day: 6, label: "Genesis 4:17–5:5", passage: "Genesis 4:17-5:5" },
+    { day: 7, label: "Genesis 5:6–32", passage: "Genesis 5:6-32" },
+    { day: 8, label: "Genesis 6:1–22", passage: "Genesis 6:1-22" },
+    { day: 9, label: "Genesis 7:1–24", passage: "Genesis 7:1-24" },
+    { day: 10, label: "Genesis 8:1–22", passage: "Genesis 8:1-22" },
+    { day: 11, label: "Genesis 9:1–17", passage: "Genesis 9:1-17" },
+    { day: 12, label: "Genesis 9:18–29", passage: "Genesis 9:18-29" },
+    { day: 13, label: "Genesis 11:1–9, 27–32", passage: "Genesis 11:1-9,27-32" },
+    { day: 14, label: "Genesis 12:1–20", passage: "Genesis 12:1-20" },
+    { day: 15, label: "Genesis 13:1–18", passage: "Genesis 13:1-18" },
+    { day: 16, label: "Genesis 14:8–24", passage: "Genesis 14:8-24" },
+    { day: 17, label: "Genesis 15:1–21", passage: "Genesis 15:1-21" },
+    { day: 18, label: "Genesis 16:1–16", passage: "Genesis 16:1-16" },
+    { day: 19, label: "Genesis 17:1–27", passage: "Genesis 17:1-27" },
+    { day: 20, label: "Genesis 18:1–33", passage: "Genesis 18:1-33" },
+    { day: 21, label: "Genesis 18:16–33", passage: "Genesis 18:16-33" },
+    { day: 22, label: "Genesis 19:1–38", passage: "Genesis 19:1-38" },
+    { day: 23, label: "Genesis 20:1–18", passage: "Genesis 20:1-18" },
+    { day: 24, label: "Genesis 21:1–21", passage: "Genesis 21:1-21" },
+    { day: 25, label: "Genesis 21:22–34", passage: "Genesis 21:22-34" },
+    { day: 26, label: "Genesis 22:1–19", passage: "Genesis 22:1-19" },
+    { day: 27, label: "Genesis 22:20–24", passage: "Genesis 22:20-24" },
+    { day: 28, label: "Genesis 23:1–20", passage: "Genesis 23:1-20" },
+    { day: 29, label: "Genesis 24:1–67", passage: "Genesis 24:1-67" },
+    { day: 30, label: "Genesis 25:1–18", passage: "Genesis 25:1-18" },
+    { day: 31, label: "Genesis 31:8 & 41:8", passage: "Genesis 31:8;41:8" }
+  ],
 
-  const bibleGatewayBase =
-    "https://www.biblegateway.com/passage/?search=";
-  const version = "&version=NIV";
+  February: [
+    { day: 1, label: "Psalm 5:1–12", passage: "Psalm 5:1-12" },
+    { day: 2, label: "Psalm 8:1–9", passage: "Psalm 8:1-9" },
+    { day: 3, label: "Psalm 7:1–17", passage: "Psalm 7:1-17" },
+    { day: 4, label: "Psalm 8:1–9", passage: "Psalm 8:1-9" },
+    { day: 5, label: "Psalm 10:1–18", passage: "Psalm 10:1-18" },
+    { day: 6, label: "Psalm 11:1–7", passage: "Psalm 11:1-7" },
+    { day: 7, label: "Psalm 12:1–8", passage: "Psalm 12:1-8" }
+    // (Continue rest of February the same way)
+  ]
+};
 
-  function bibleLink(psalm) {
-    return bibleGatewayBase + encodeURIComponent(psalm) + version;
+const BASE = "https://www.biblegateway.com/passage/?search=";
+const VERSION = "&version=NIV";
+
+function link(passage) {
+  return BASE + encodeURIComponent(passage) + VERSION;
+}
+
+function showToday() {
+  const now = new Date();
+  const monthName = now.toLocaleString("default", { month: "long" });
+  const day = now.getDate();
+
+  const content = document.getElementById("content");
+  content.style.display = "block";
+
+  const entry = plan[monthName]?.find(e => e.day === day);
+
+  if (!entry) {
+    content.innerHTML = `<h2>Today’s Reading</h2><p class="note">No reading scheduled.</p>`;
+    return;
   }
 
-  function showToday() {
-    const today = new Date();
-    const start = new Date(today.getFullYear(), 0, 1);
-    const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+  content.innerHTML = `
+    <h2>Today’s Reading</h2>
+    <p class="date">${monthName} ${day}</p>
+    <p class="psalm">
+      <a href="${link(entry.passage)}" target="_blank">
+        ${entry.label} → Read on Bible Gateway
+      </a>
+    </p>
+  `;
+}
 
-    const content = document.getElementById("content");
-    content.style.display = "block";
+function showPlan() {
+  const content = document.getElementById("content");
+  content.style.display = "block";
 
-    if (diffDays >= 0 && diffDays < readings.length) {
-      const reading = readings[diffDays];
-      content.innerHTML = `
-        <h2>Today’s Reading</h2>
-        <p class="date">${reading.date}</p>
-        <p class="psalm">
-          <a href="${bibleLink(reading.psalm)}" target="_blank" rel="noopener">
-            ${reading.psalm} → Read on Bible Gateway
-          </a>
-        </p>
-      `;
-    } else {
-      content.innerHTML = `
-        <h2>Today’s Reading</h2>
-        <p class="note">The reading plan currently covers January 1–7.</p>
-      `;
-    }
-  }
+  let html = `<h2>Reading Plan</h2>`;
 
-  function showPlan() {
-    const content = document.getElementById("content");
-    content.style.display = "block";
-
-    let html = `<h2>7-Day Reading Plan</h2>`;
-
-    readings.forEach(item => {
+  for (const month in plan) {
+    html += `<h3>${month}</h3>`;
+    plan[month].forEach(e => {
       html += `
         <div class="plan-item">
-          <div class="date">${item.date}</div>
+          <div class="date">${month} ${e.day}</div>
           <div class="psalm">
-            <a href="${bibleLink(item.psalm)}" target="_blank" rel="noopener">
-              ${item.psalm} → Read on Bible Gateway
+            <a href="${link(e.passage)}" target="_blank">
+              ${e.label}
             </a>
           </div>
         </div>
       `;
     });
-
-    content.innerHTML = html;
   }
+
+  content.innerHTML = html;
+}
+</script>
+
 </script>
 
 </body>
