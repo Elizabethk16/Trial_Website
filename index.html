@@ -83,6 +83,34 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.month h3 {
+cursor: pointer;
+user-select: none;
+background: #f1efff;
+padding: 10px 14px;                                                
+border-radius: 8px;      
+}
+
+.month h3::after {
+  content: "▸";
+  float: right;
+  transition: transform 0.2s;
+}
+
+.month.open h3::after {
+  transform: rotate(90deg);
+}
+
+.month-content {
+  display: none;
+  padding-left: 10px;
+}
+
+.month.open .month-content {
+  display: block;
+}
+
 </style>
 </head>
 
@@ -134,6 +162,23 @@ function toggleProgress(month, day) {
   progress[key] = !progress[key];
   saveProgress(progress);
 }
+
+/* =========================
+   MONTH COLLAPSE STATE
+========================= */
+const monthStateKey = "bibleReadingMonthState";
+
+function getMonthState() {
+  return JSON.parse(localStorage.getItem(monthStateKey)) || {};
+}
+
+function toggleMonth(month) {
+  const state = getMonthState();
+  state[month] = !state[month];
+  localStorage.setItem(monthStateKey, JSON.stringify(state));
+  showPlan(); // re-render
+}
+
 /* =========================
    FULL YEAR READING PLAN
 ========================= */
@@ -366,10 +411,23 @@ function showPlan() {
   populateMonthSelector();
 
   const progress = getProgress();
+  const monthState = getMonthState();
+  const currentMonth =
+    new Date().toLocaleString("default", { month: "long" });
+
   let html = "<h2>Full Reading Plan</h2>";
 
   for (const month in plan) {
-    html += `<div class="month"><h3>${month}</h3>`;
+    const isOpen =
+      monthState[month] !== undefined
+        ? monthState[month]
+        : month === currentMonth;
+
+    html += `
+      <div class="month ${isOpen ? "open" : ""}">
+        <h3 onclick="toggleMonth('${month}')">${month}</h3>
+        <div class="month-content">
+    `;
 
     plan[month].forEach(e => {
       const done = progress[`${month}-${e[0]}`] ? "checked" : "";
@@ -384,11 +442,15 @@ function showPlan() {
       `;
     });
 
-    html += "</div>";
+    html += `
+        </div>
+      </div>
+    `;
   }
 
   content.innerHTML = html;
 }
+
 
   function populateMonthSelector() {
   const monthSelect = document.getElementById("monthSelect");
