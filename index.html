@@ -111,6 +111,14 @@ border-radius: 8px;
   display: block;
 }
 
+.gateway-link {
+font-size: 0.9rem;
+color: #6b5bd2;
+margin-left: 6px;
+font-style: italic;
+}
+
+
 </style>
 </head>
 
@@ -397,7 +405,10 @@ function showToday() {
     </label>
 
     <p>
-      <a href="${link(entry[1])}" target="_blank">${entry[1]}</a>
+      <a href="${link(entry[1])}" target="_blank">
+        ${entry[1]}
+        <span class="gateway-link">— Click here to read on Bible Gateway</span>
+      </a>
     </p>
   `;
 }
@@ -437,7 +448,10 @@ function showPlan() {
             ${done}
             onchange="toggleProgress('${month}','${e[0]}')">
           <span class="date">${month} ${e[0]}</span><br>
-          <a href="${link(e[1])}" target="_blank">${e[1]}</a>
+          <a href="${link(e[1])}" target="_blank">
+            ${e[1]}
+            <span class="gateway-link">— Click here to read on Bible Gateway</span>
+          </a>
         </div>
       `;
     });
@@ -485,12 +499,15 @@ document.getElementById("goBtn").onclick = () => {
   const day = document.getElementById("daySelect").value;
   const entry = plan[month].find(e => e[0] === day);
 
-  document.getElementById("content").innerHTML = `
-    <h2>${month} ${day}</h2>
-    <p>
-      <a href="${link(entry[1])}" target="_blank">${entry[1]}</a>
-    </p>
-  `;
+document.getElementById("content").innerHTML = `
+  <h2>${month} ${day}</h2>
+  <p>
+    <a href="${link(entry[1])}" target="_blank">
+      ${entry[1]}
+      <span class="gateway-link">— Click here to read on Bible Gateway</span>
+    </a>
+  </p>
+`;
 };
 
 
