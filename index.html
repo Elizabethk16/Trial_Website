@@ -96,6 +96,20 @@ a:hover {
   <button id="planBtn">Full Reading Plan</button>
 </div>
 
+<div id="selector" style="display:none; margin-bottom:20px;">
+  <label>
+    Month:
+    <select id="monthSelect"></select>
+  </label>
+  
+  <label style="margin-left:15px;">
+    Day:
+    <select id="daySelect"></select>
+  </label>
+  
+  <button id="goBtn" style="margin-left:15px;">Go</button>
+</div>
+
 <div id="content"></div>
 </div>
 
@@ -104,6 +118,22 @@ const BASE = "https://www.biblegateway.com/passage/?search=";
 const VERSION = "&version=NIV";
 const link = p => BASE + encodeURIComponent(p) + VERSION;
 
+const progressKey = "bibleReadingProgress";
+
+function getProgress() {
+  return JSON.parse(localStorage.getItem(progressKey)) || {};
+}
+
+function saveProgress(data) {
+  localStorage.setItem(progressKey, JSON.stringify(data));
+}
+
+function toggleProgress(month, day) {
+  const progress = getProgress();
+  const key = `${month}-${day}`;
+  progress[key] = !progress[key];
+  saveProgress(progress);
+}
 /* =========================
    FULL YEAR READING PLAN
 ========================= */
@@ -298,7 +328,13 @@ function showToday() {
   const day = now.getDate().toString();
   const entry = plan[month]?.find(e => e[0] === day);
 
+  const selector = document.getElementById("selector");
+  selector.style.display = "none";
+
   const content = document.getElementById("content");
+  const progress = getProgress();
+  const checked = progress[`${month}-${day}`] ? "checked" : "";
+
   if (!entry) {
     content.innerHTML = "<h2>No reading scheduled.</h2>";
     return;
@@ -307,25 +343,95 @@ function showToday() {
   content.innerHTML = `
     <h2>Today’s Reading</h2>
     <p class="date">${month} ${day}</p>
-    <p><a href="${link(entry[1])}" target="_blank">${entry[1]}</a></p>
+
+    <label>
+      <input type="checkbox"
+        ${checked}
+        onchange="toggleProgress('${month}','${day}')">
+      Mark as completed
+    </label>
+
+    <p>
+      <a href="${link(entry[1])}" target="_blank">${entry[1]}</a>
+    </p>
   `;
 }
 
+
 function showPlan() {
+  const content = document.getElementById("content");
+  const selector = document.getElementById("selector");
+  selector.style.display = "block";
+
+  populateMonthSelector();
+
+  const progress = getProgress();
   let html = "<h2>Full Reading Plan</h2>";
+
   for (const month in plan) {
     html += `<div class="month"><h3>${month}</h3>`;
+
     plan[month].forEach(e => {
+      const done = progress[`${month}-${e[0]}`] ? "checked" : "";
       html += `
         <div class="plan-item">
+          <input type="checkbox"
+            ${done}
+            onchange="toggleProgress('${month}','${e[0]}')">
           <span class="date">${month} ${e[0]}</span><br>
           <a href="${link(e[1])}" target="_blank">${e[1]}</a>
-        </div>`;
+        </div>
+      `;
     });
+
     html += "</div>";
   }
-  document.getElementById("content").innerHTML = html;
+
+  content.innerHTML = html;
 }
+
+  function populateMonthSelector() {
+  const monthSelect = document.getElementById("monthSelect");
+  const daySelect = document.getElementById("daySelect");
+
+  monthSelect.innerHTML = "";
+  Object.keys(plan).forEach(month => {
+    const opt = document.createElement("option");
+    opt.value = month;
+    opt.textContent = month;
+    monthSelect.appendChild(opt);
+  });
+
+  monthSelect.onchange = () => populateDaySelector(monthSelect.value);
+  populateDaySelector(monthSelect.value);
+}
+
+function populateDaySelector(month) {
+  const daySelect = document.getElementById("daySelect");
+  daySelect.innerHTML = "";
+
+  plan[month].forEach(e => {
+    const opt = document.createElement("option");
+    opt.value = e[0];
+    opt.textContent = e[0];
+    daySelect.appendChild(opt);
+  });
+}
+
+document.getElementById("goBtn").onclick = () => {
+  const month = document.getElementById("monthSelect").value;
+  const day = document.getElementById("daySelect").value;
+  const entry = plan[month].find(e => e[0] === day);
+
+  document.getElementById("content").innerHTML = `
+    <h2>${month} ${day}</h2>
+    <p>
+      <a href="${link(entry[1])}" target="_blank">${entry[1]}</a>
+    </p>
+  `;
+};
+
+
 
 document.getElementById("todayBtn").onclick = showToday;
 document.getElementById("planBtn").onclick = showPlan;
