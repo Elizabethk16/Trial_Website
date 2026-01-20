@@ -241,6 +241,31 @@ border-radius: 8px;
   transition: width 0.4s ease;
 }
 
+#selector {
+  display: flex;
+  flex-wrap: wrap; /* allows items to move to next line on small screens */
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* space between controls */
+  margin-bottom: 20px;
+}
+
+#selector label {
+  display: flex;
+  flex-direction: column; /* stack the label and select vertically */
+  font-family: Inter, sans-serif;
+  font-size: 0.9rem;
+  color: #4a3d7a;
+}
+
+#selector select {
+  padding: 6px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px; /* small space between label text and dropdown */
+}
+
 
 .date-selector {
   background: linear-gradient(180deg, #f3efff, #ebe6ff);
