@@ -243,28 +243,38 @@ border-radius: 8px;
 
 #selector {
   display: none;
-  flex-wrap: wrap; /* allows items to move to next line on small screens */
-  align-items: center;
   justify-content: center;
-  gap: 10px; /* space between controls */
   margin-bottom: 20px;
 }
 
+#selector.show {
+  display: flex;
+}
+
+.selector-inner {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  background: #f1eeff;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+
 #selector label {
   display: flex;
-  flex-direction: column; /* stack the label and select vertically */
-  font-family: Inter, sans-serif;
-  font-size: 0.9rem;
+  flex-direction: column;
+  font-size: 0.85rem;
   color: #4a3d7a;
 }
 
 #selector select {
+  width: 140px;          /* 👈 compact rectangle */
   padding: 6px 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-top: 4px; /* small space between label text and dropdown */
 }
+
 
 
 .date-selector {
@@ -311,18 +321,13 @@ border-radius: 8px;
 }
 
 @media (max-width: 600px) {
-  #selector.show {
+  .selector-inner {
     flex-direction: column;
-    align-items: center;   /* center instead of stretch */
-  }
-
-  #selector label {
-    width: 100%;
-    max-width: 260px;      /* narrower, readable */
+    align-items: center;
   }
 
   #selector select {
-    width: 100%;
+    width: 220px;        /* slightly wider on mobile */
   }
 
   #goBtn {
@@ -362,19 +367,22 @@ border-radius: 8px;
 </div>
 
 
-<div id="selector" class="date-selector">
-  <label>
-    Month:
-    <select id="monthSelect"></select>
-  </label>
-  
-  <label style="margin-left:15px;">
-    Day:
-    <select id="daySelect"></select>
-  </label>
-  
-  <button id="goBtn" style="margin-left:15px;">Go</button>
+<div id="selector">
+  <div class="selector-inner">
+    <label>
+      Month:
+      <select id="monthSelect"></select>
+    </label>
+
+    <label>
+      Day:
+      <select id="daySelect"></select>
+    </label>
+
+    <button id="goBtn">Go</button>
+  </div>
 </div>
+
 
 <div id="content"></div>
 </div>
