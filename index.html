@@ -311,29 +311,27 @@ border-radius: 8px;
 }
 
 @media (max-width: 600px) {
-  .date-selector {
+  #selector.show {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;   /* center instead of stretch */
   }
 
-  .date-selector label {
-    display: flex;
-    justify-content: space-between;
+  #selector label {
+    width: 100%;
+    max-width: 280px;      /* narrower, readable */
   }
 
-  .date-selector select {
-    margin-left: 0;
+  #selector select {
+    width: 100%;
+  }
+
+  #goBtn {
+    width: auto;
+    padding: 8px 20px;
     margin-top: 6px;
   }
-  
-  #content a {
-    font-size: 1.05rem;
-  }
-
-  #content h2 {
-    font-size: 1.4rem;
-  }
 }
+
 
 
 </style>
